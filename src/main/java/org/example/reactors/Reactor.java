@@ -1,4 +1,4 @@
-package reactors;
+package org.example.reactors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

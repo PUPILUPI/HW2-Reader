@@ -1,8 +1,7 @@
-package readers;
+package org.example.readers;
 
-import reactors.Reactor;
+import org.example.reactors.Reactor;
 
-import java.io.IOException;
 import java.util.Map;
 
 public abstract class Reader {

@@ -1,10 +1,10 @@
 package org.example;
 
-import exceptions.WrongFormatException;
-import reactors.Reactor;
-import reactors.ReactorLibrary;
-import readers.Factory;
-import readers.Reader;
+import org.example.exceptions.WrongFormatException;
+import org.example.reactors.Reactor;
+import org.example.reactors.ReactorLibrary;
+import org.example.readers.Factory;
+import org.example.readers.Reader;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -93,37 +93,7 @@ public class GUI extends JFrame implements ActionListener {
     private TreeNode addInfoToGUI(ReactorLibrary reactorLibrary) {
         DefaultMutableTreeNode main = new DefaultMutableTreeNode("Реакторы");
         for (Map.Entry<String, Reactor> entry : reactorLibrary.getMap().entrySet()) {
-//            DefaultMutableTreeNode node = new DefaultMutableTreeNode(entry.getKey());
-//            node.add(entry.getValue().getNode());
             main.add(entry.getValue().getNode());
-//            varNode = new DefaultMutableTreeNode(entry.getKey());
-//            rootTree.add(varNode);
-//            newChild = new DefaultMutableTreeNode("class: " +
-//                    entry.getValue().getClassReactor());
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "burnup: " + Double.toString(entry.getValue().getBurnup()));
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "kpd: " + Double.toString(entry.getValue().getKpd()));
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "encriment: " + Double.toString(entry.getValue().getEnrichment()));
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "termal capacity: " +
-//                            Double.toString(entry.getValue().getTermalCapacity()));
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "electrical capacity: " +
-//                            Double.toString(entry.getValue().getElectricalCapacity()));
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "life time: " + Double.toString(entry.getValue().getLifeTime()));
-//            varNode.add(newChild);
-//            newChild = new DefaultMutableTreeNode(
-//                    "first load: " + Double.toString(entry.getValue().getFirstLoad()));
-//            varNode.add(newChild);
         }
         return main;
     }

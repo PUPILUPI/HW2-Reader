@@ -1,8 +1,8 @@
-package readers;
+package org.example.readers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import reactors.Reactor;
+import org.example.reactors.Reactor;
 
 import java.io.File;
 import java.io.IOException;

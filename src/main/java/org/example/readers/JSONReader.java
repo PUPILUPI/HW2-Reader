@@ -1,8 +1,8 @@
-package readers;
+package org.example.readers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import reactors.Reactor;
+import org.example.reactors.Reactor;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class JSONReader extends Reader {
         try {
             map = objectMapper.readValue(new File(fileName), new TypeReference<Map<String, Reactor>>() {});
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("jib,rf");
         }
         return map;
     }
