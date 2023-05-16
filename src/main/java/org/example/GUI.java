@@ -1,9 +1,9 @@
 package org.example;
 
-import org.example.exceptions.WrongFormatException;
+import org.example.exceptions.ReactorLibraryException;
+import org.example.importers.ImporterBuilder;
 import org.example.reactors.Reactor;
 import org.example.reactors.ReactorLibrary;
-import org.example.readers.Factory;
 import org.example.readers.Reader;
 
 import javax.swing.*;
@@ -68,26 +68,28 @@ public class GUI extends JFrame implements ActionListener {
 
     private void renderTreeAction() {
         ReactorLibrary reactorLibrary = null;
+        if (selectedFileName == null) {
+            JOptionPane.showMessageDialog(null, "Вы не выбрали файл");
+            return;
+        }
         try {
-            Factory factory = new Factory();
-            Reader reader = factory.createReader(selectedFileName);
+            ImporterBuilder importerBuilder = new ImporterBuilder();
             reactorLibrary = new ReactorLibrary(selectedFileName);
-            reactorLibrary.setMap(reader.readFile(reactorLibrary.getSource()));
+            reactorLibrary.setMap(importerBuilder.getData(reactorLibrary.getSource()));
             for (Map.Entry<String, Reactor> entry : reactorLibrary.getMap().entrySet()) {
                 System.out.println(entry.getValue());
             }
-        }catch (NullPointerException e){
-            JOptionPane.showMessageDialog(null,"Вы не выбрали файл!","Я понял", ERROR_MESSAGE);
-        }catch (WrongFormatException e) {
-            JOptionPane.showMessageDialog(null,"Вы выбрали некорректный формат","Я понял", ERROR_MESSAGE);
-        }catch (RuntimeException e){
-            JOptionPane.showMessageDialog(null,"Внутри файла бардак","Я понял", ERROR_MESSAGE);
+            rootTree = new DefaultTreeModel(addInfoToGUI(reactorLibrary));
+            tree = new JTree();
+            tree.setModel(rootTree);
+            scrollPanel.setViewportView(tree);
+        } catch (ReactorLibraryException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Я понял", ERROR_MESSAGE);
         }
+//        catch (RuntimeException e) {
+//            JOptionPane.showMessageDialog(null, "Внутри файла бардак", "Я понял", ERROR_MESSAGE);
+//        }
 
-        rootTree = new DefaultTreeModel(addInfoToGUI(reactorLibrary));
-        tree = new JTree();
-        tree.setModel(rootTree);
-        scrollPanel.setViewportView(tree);
     }
 
     private TreeNode addInfoToGUI(ReactorLibrary reactorLibrary) {

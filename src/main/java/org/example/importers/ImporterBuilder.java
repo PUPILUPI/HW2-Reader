@@ -1,0 +1,26 @@
+package org.example.importers;
+
+import org.example.reactors.Reactor;
+
+import java.util.Map;
+
+public class ImporterBuilder {
+    private Importer xml;
+    private Importer yaml;
+    private Importer json;
+
+    public Map<String, Reactor> getData(String path) {
+        setParam();
+        return json.readFile(path);
+    }
+
+    private void setParam() {
+        this.xml = new XMLImporter();
+        this.yaml = new YAMLImporter();
+        this.json = new JSONImporter();
+
+        json.setNeighbour(xml);
+        xml.setNeighbour(yaml);
+        yaml.setNeighbour(null);
+    }
+}

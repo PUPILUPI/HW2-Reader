@@ -14,15 +14,11 @@ public class YAMLReader extends Reader {
 
         Map<String, Reactor> map;
         YAMLMapper mapper = new YAMLMapper();
-//        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-
         try {
-            map = mapper.readValue(
-                    new File(fileName), new TypeReference<Map<String, Reactor>>() {});
+            map = mapper.readValue(new File(fileName), new TypeReference<>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return map;
     }
 }

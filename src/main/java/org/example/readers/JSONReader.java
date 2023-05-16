@@ -13,10 +13,9 @@ public class JSONReader extends Reader {
     public Map<String, Reactor> readFile(String fileName) {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Reactor> map;
-        try {
-            map = objectMapper.readValue(new File(fileName), new TypeReference<Map<String, Reactor>>() {});
+        try {map = objectMapper.readValue(new File(fileName), new TypeReference<>() {});
         } catch (IOException e) {
-            throw new RuntimeException("jib,rf");
+            throw new RuntimeException(e);
         }
         return map;
     }

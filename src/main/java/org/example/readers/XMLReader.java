@@ -14,7 +14,7 @@ public class XMLReader extends Reader {
         Map<String, Reactor> map;
         XmlMapper mapper = new XmlMapper();
         try {
-            map = mapper.readValue(new File(fileName), new TypeReference<Map<String, Reactor>>() {});
+            map = mapper.readValue(new File(fileName), new TypeReference<>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
