@@ -2,7 +2,6 @@ package org.example.importers;
 
 import org.example.exceptions.WrongFormatException;
 import org.example.reactors.Reactor;
-import org.example.readers.JSONReader;
 import org.example.readers.YAMLReader;
 
 import java.util.Map;

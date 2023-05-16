@@ -4,7 +4,6 @@ import org.example.exceptions.ReactorLibraryException;
 import org.example.importers.ImporterBuilder;
 import org.example.reactors.Reactor;
 import org.example.reactors.ReactorLibrary;
-import org.example.readers.Reader;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,11 +17,11 @@ import java.util.Map;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 public class GUI extends JFrame implements ActionListener {
-    private JPanel panelTop;
-    private JButton chooseFile;
-    private JButton renderTree;
-    private JTextField fileName;
-    private JScrollPane scrollPanel;
+    private final JPanel panelTop;
+    private final JButton chooseFile;
+    private final JButton renderTree;
+    private final JTextField fileName;
+    private final JScrollPane scrollPanel;
     private JTree tree;
     private DefaultTreeModel rootTree;
     private String selectedFileName;
@@ -67,7 +66,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void renderTreeAction() {
-        ReactorLibrary reactorLibrary = null;
+        ReactorLibrary reactorLibrary;
         if (selectedFileName == null) {
             JOptionPane.showMessageDialog(null, "Вы не выбрали файл");
             return;
@@ -85,10 +84,9 @@ public class GUI extends JFrame implements ActionListener {
             scrollPanel.setViewportView(tree);
         } catch (ReactorLibraryException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Я понял", ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Внутри файла бардак", "Я понял", ERROR_MESSAGE);
         }
-//        catch (RuntimeException e) {
-//            JOptionPane.showMessageDialog(null, "Внутри файла бардак", "Я понял", ERROR_MESSAGE);
-//        }
 
     }
 
