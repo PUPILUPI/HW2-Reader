@@ -1,7 +1,7 @@
-package org.example.importers;
+package ru.belov.importers;
 
-import org.example.reactors.Reactor;
-import org.example.readers.JSONReader;
+import ru.belov.reactors.Reactor;
+import ru.belov.readers.JSONReader;
 
 import java.util.Map;
 

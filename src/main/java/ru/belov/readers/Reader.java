@@ -1,6 +1,6 @@
-package org.example.readers;
+package ru.belov.readers;
 
-import org.example.reactors.Reactor;
+import ru.belov.reactors.Reactor;
 
 import java.util.Map;
 

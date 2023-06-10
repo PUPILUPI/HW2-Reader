@@ -1,8 +1,8 @@
-package org.example.readers;
+package ru.belov.readers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import org.example.reactors.Reactor;
+import ru.belov.reactors.Reactor;
 
 import java.io.File;
 import java.io.IOException;

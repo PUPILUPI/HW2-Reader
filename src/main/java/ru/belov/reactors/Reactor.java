@@ -1,4 +1,4 @@
-package org.example.reactors;
+package ru.belov.reactors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

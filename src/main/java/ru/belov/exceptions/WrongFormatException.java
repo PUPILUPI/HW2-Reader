@@ -1,4 +1,4 @@
-package org.example.exceptions;
+package ru.belov.exceptions;
 
 public class WrongFormatException extends ReactorLibraryException {
     public WrongFormatException(String format) {

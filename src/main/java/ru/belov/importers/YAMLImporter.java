@@ -1,8 +1,8 @@
-package org.example.importers;
+package ru.belov.importers;
 
-import org.example.exceptions.WrongFormatException;
-import org.example.reactors.Reactor;
-import org.example.readers.YAMLReader;
+import ru.belov.exceptions.WrongFormatException;
+import ru.belov.reactors.Reactor;
+import ru.belov.readers.YAMLReader;
 
 import java.util.Map;
 
@@ -16,9 +16,8 @@ public class YAMLImporter extends Importer {
         if (path.endsWith(".yaml")) {
             return this.getReader().readFile(path);
         } else {
-            String[] split = path.split("\\.");
-            throw new WrongFormatException(split[split.length - 1]);
+            throw new WrongFormatException("ld;d");
         }
-
     }
+
 }
