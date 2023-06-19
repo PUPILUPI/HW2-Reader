@@ -1,25 +1,30 @@
 package ru.belov.importers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
 
 import java.util.Map;
-
+@Component
 public class ImporterBuilder {
-    private Importer xml;
-    private Importer yaml;
-    private Importer json;
+    private final Importer xml;
+    private final Importer yaml;
+    private final Importer json;
+    @Autowired
+    public ImporterBuilder(@Qualifier("xMLImporter") Importer xml, @Qualifier("yAMLImporter") Importer yaml, @Qualifier("jSONImporter") Importer json) {
+        this.xml = xml;
+        this.yaml = yaml;
+        this.json = json;
+        this.json.setNeighbour(xml);
+        this.xml.setNeighbour(yaml);
+        this.yaml.setNeighbour(null);
+    }
+    public void setParam() {
 
-    public Map<String, Reactor> getData(String path) {
-        this.xml = new XMLImporter();
-        this.yaml = new YAMLImporter();
-        this.json = new JSONImporter();
-        setParam();
-        return json.readFile(path);
     }
 
-    private void setParam() {
-        json.setNeighbour(xml);
-        xml.setNeighbour(yaml);
-        yaml.setNeighbour(null);
+    public Map<String, Reactor> getData(String path) {
+        return json.readFile(path);
     }
 }

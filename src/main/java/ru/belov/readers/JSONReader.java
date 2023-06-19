@@ -2,13 +2,14 @@ package ru.belov.readers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
-public class JSONReader extends Reader {
+@Component
+public class JSONReader implements Reader {
     @Override
     public Map<String, Reactor> readFile(String fileName) {
         ObjectMapper objectMapper = new ObjectMapper();

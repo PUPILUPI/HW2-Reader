@@ -1,14 +1,16 @@
 package ru.belov.importers;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import ru.belov.exceptions.WrongFormatException;
 import ru.belov.reactors.Reactor;
-import ru.belov.readers.YAMLReader;
+import ru.belov.readers.Reader;
 
 import java.util.Map;
-
+@Component
 public class YAMLImporter extends Importer {
-    public YAMLImporter() {
-        setReader(new YAMLReader());
+    public YAMLImporter(@Qualifier("yAMLReader")Reader reader) {
+        this.setReader(reader);
     }
 
     @Override

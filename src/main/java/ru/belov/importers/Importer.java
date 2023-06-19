@@ -1,5 +1,6 @@
 package ru.belov.importers;
 
+import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
 import ru.belov.readers.Reader;
 

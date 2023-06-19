@@ -1,13 +1,16 @@
 package ru.belov.importers;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
 import ru.belov.readers.JSONReader;
+import ru.belov.readers.Reader;
 
 import java.util.Map;
-
+@Component
 public class JSONImporter extends Importer {
-    public JSONImporter() {
-        setReader(new JSONReader());
+    public JSONImporter(@Qualifier("jSONReader") Reader reader) {
+        this.setReader(reader);
     }
 
     @Override

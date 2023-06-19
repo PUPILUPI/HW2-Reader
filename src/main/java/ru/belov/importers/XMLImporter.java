@@ -1,13 +1,16 @@
 package ru.belov.importers;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
+import ru.belov.readers.Reader;
 import ru.belov.readers.XMLReader;
 
 import java.util.Map;
-
+@Component
 public class XMLImporter extends Importer {
-    public XMLImporter() {
-        setReader(new XMLReader());
+    public XMLImporter(@Qualifier("xMLReader") Reader reader) {
+        this.setReader(reader);
     }
 
     @Override
