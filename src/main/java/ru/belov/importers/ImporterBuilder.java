@@ -12,7 +12,7 @@ public class ImporterBuilder {
     private final Importer yaml;
     private final Importer json;
     @Autowired
-    public ImporterBuilder(@Qualifier("xMLImporter") Importer xml, @Qualifier("yAMLImporter") Importer yaml, @Qualifier("jSONImporter") Importer json) {
+    public ImporterBuilder(@Qualifier("XMLImporter") Importer xml, @Qualifier("YAMLImporter") Importer yaml, @Qualifier("JSONImporter") Importer json) {
         this.xml = xml;
         this.yaml = yaml;
         this.json = json;

@@ -7,9 +7,9 @@ import ru.belov.readers.JSONReader;
 import ru.belov.readers.Reader;
 
 import java.util.Map;
-@Component
+@Component("JSONImporter")
 public class JSONImporter extends Importer {
-    public JSONImporter(@Qualifier("jSONReader") Reader reader) {
+    public JSONImporter(@Qualifier("JSONReader") Reader reader) {
         this.setReader(reader);
     }
 

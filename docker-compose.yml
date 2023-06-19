@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: app
+    build: .
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      DISPLAY: ${DISPLAY}
+      POSTGRES_SERVER: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    network_mode: host
+    #links:
+    # - db:db_domain
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres:15.2
+    volumes:
+      - dbvolume:/var/lib/postgresql/dbvolume
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  dbvolume:

@@ -7,9 +7,9 @@ import ru.belov.readers.Reader;
 import ru.belov.readers.XMLReader;
 
 import java.util.Map;
-@Component
+@Component("XMLImporter")
 public class XMLImporter extends Importer {
-    public XMLImporter(@Qualifier("xMLReader") Reader reader) {
+    public XMLImporter(@Qualifier("XMLReader") Reader reader) {
         this.setReader(reader);
     }
 

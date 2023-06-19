@@ -8,7 +8,7 @@ import ru.belov.reactors.Reactor;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-@Component
+@Component ("YAMLReader")
 public class YAMLReader implements Reader {
     @Override
     public Map<String, Reactor> readFile(String fileName) {

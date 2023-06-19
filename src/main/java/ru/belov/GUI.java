@@ -5,21 +5,21 @@
 package ru.belov;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import ru.belov.importers.ImporterBuilder;
 import ru.belov.reactors.ReactorLibrary;
 
 import javax.swing.*;
+import java.awt.*;
 
-/**
- * @author Xiaomi
- */
-@Component
+@SpringBootApplication
 public class GUI extends javax.swing.JFrame {
     @Autowired
     private ImporterBuilder importerBuilder;
     private ReactorLibrary library;
     private String fileName = null;
+
 
     public GUI() {
         initComponents();
@@ -42,7 +42,7 @@ public class GUI extends javax.swing.JFrame {
         consumptionByRegion = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         chooseFile = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        loadDB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,7 +84,12 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Загрузить в бд");
+        loadDB.setText("Загрузить в бд");
+        loadDB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadDBActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -102,7 +107,7 @@ public class GUI extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addComponent(loadDB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
@@ -115,7 +120,7 @@ public class GUI extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(loadDB, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(18, 18, 18)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -162,29 +167,44 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_consumptionByCompanyActionPerformed
 
     private void chooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseFileActionPerformed
-        JFileChooser fileChooser = new JFileChooser("src\\main\\java\\files");
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir") + "\\src\\main\\resources");
         int ret = fileChooser.showDialog(null, "Choose file");
         if (ret != JFileChooser.APPROVE_OPTION) {
             return;
         }
         fileName = fileChooser.getSelectedFile().getAbsolutePath();
+        library = new ReactorLibrary(fileName);
+        library.setMap(importerBuilder.getData(fileName));
     }//GEN-LAST:event_chooseFileActionPerformed
+
+    private void loadDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDBActionPerformed
+
+    }//GEN-LAST:event_loadDBActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new GUI().setVisible(true));
+    public static void main(String[] args) {
+        var ctx = new SpringApplicationBuilder(GUI.class)
+                .headless(false).run(args);
+
+        EventQueue.invokeLater(() -> {
+            var ex = ctx.getBean(GUI.class);
+            ex.setVisible(true);
+            var ib = ctx.getBean(ImporterBuilder.class);
+            ex.importerBuilder = ib;
+        });
     }
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chooseFile;
     private javax.swing.JButton consumptionByCompany;
     private javax.swing.JButton consumptionByCountry;
     private javax.swing.JButton consumptionByRegion;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-
+    private javax.swing.JButton loadDB;
+    // End of variables declaration//GEN-END:variables
 }

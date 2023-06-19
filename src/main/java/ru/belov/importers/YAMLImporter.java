@@ -7,9 +7,9 @@ import ru.belov.reactors.Reactor;
 import ru.belov.readers.Reader;
 
 import java.util.Map;
-@Component
+@Component("YAMLImporter")
 public class YAMLImporter extends Importer {
-    public YAMLImporter(@Qualifier("yAMLReader")Reader reader) {
+    public YAMLImporter(@Qualifier("YAMLReader")Reader reader) {
         this.setReader(reader);
     }
 
