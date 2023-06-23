@@ -8,18 +8,16 @@ import ru.belov.reactors.Reactor;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-@Component ("YAMLReader")
+
+@Component("YAMLReader")
 public class YAMLReader implements Reader {
     @Override
-    public Map<String, Reactor> readFile(String fileName) {
+    public Map<String, Reactor> readFile(String fileName) throws IOException {
 
         Map<String, Reactor> map;
         YAMLMapper mapper = new YAMLMapper();
-        try {
-            map = mapper.readValue(new File(fileName), new TypeReference<>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        map = mapper.readValue(new File(fileName), new TypeReference<>() {
+        });
         return map;
     }
 }

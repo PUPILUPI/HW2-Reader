@@ -8,17 +8,15 @@ import ru.belov.reactors.Reactor;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+
 @Component("XMLReader")
 public class XMLReader implements Reader {
     @Override
-    public Map<String, Reactor> readFile(String fileName) {
+    public Map<String, Reactor> readFile(String fileName) throws IOException {
         Map<String, Reactor> map;
         XmlMapper mapper = new XmlMapper();
-        try {
-            map = mapper.readValue(new File(fileName), new TypeReference<>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        map = mapper.readValue(new File(fileName), new TypeReference<>() {
+        });
         return map;
     }
 }

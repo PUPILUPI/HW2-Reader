@@ -1,16 +1,15 @@
-package ru.belov.entity;
+package ru.belov.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,15 +20,25 @@ public class Unit {
 
     @Id
     @Column(name = "id")
-    private long id;
+    private Long id;
+    @Column(name = "code")
     private String code;
+    @Column(name = "unit_name")
     private String unitName;
-    private long site;
+    @ManyToOne
+    @JoinColumn(name = "site", referencedColumnName = "id")
+    private Site site;
+    @Column(name = "status")
     private String status;
+    @Column(name = "type")
     private String type;
+    @Column(name = "model")
     private String model;
+    @Column(name = "class")
+    private String reactorClass;
     @Column(name = "ru_design")
     private boolean ruDesign;
+    @Column(name = "operator")
     private int operator;
     @Column(name = "nsss_supplier")
     private int nsssSupplier;
@@ -40,11 +49,12 @@ public class Unit {
     @Column(name = "net_capacity")
     private int netCapacity;
     @Column(name = "construction_start")
-    private LocalDate constructionStart;
+    private Date constructionStart;
     @Column(name = "commercial_operation")
-    private LocalDate commercialOperation;
+    private Date commercialOperation;
     @Column(name = "date_shutdown")
-    private LocalDate date_shutdown;
+    private Date dateShutdown;
+    @Column(name = "enrichment")
     private double enrichment;
     @Column(name = "load_factor")
     private int loadFactor;
@@ -52,4 +62,6 @@ public class Unit {
     private double burnUp;
     @Column(name = "first_load")
     private double firstLoad;
+    @Column(name = "yearly_P")
+    private double yearlyP;
 }

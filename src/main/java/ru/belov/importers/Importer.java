@@ -1,9 +1,9 @@
 package ru.belov.importers;
 
-import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
 import ru.belov.readers.Reader;
 
+import java.io.IOException;
 import java.util.Map;
 
 public abstract class Importer {
@@ -26,5 +26,5 @@ public abstract class Importer {
         this.neighbour = neighbour;
     }
 
-    public abstract Map<String, Reactor> readFile(String path);
+    public abstract Map<String, Reactor> readFile(String path) throws IOException;
 }

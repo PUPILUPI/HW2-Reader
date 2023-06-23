@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.belov.reactors.Reactor;
 import ru.belov.readers.Reader;
-import ru.belov.readers.XMLReader;
 
+import java.io.IOException;
 import java.util.Map;
 @Component("XMLImporter")
 public class XMLImporter extends Importer {
@@ -14,7 +14,7 @@ public class XMLImporter extends Importer {
     }
 
     @Override
-    public Map<String, Reactor> readFile(String path) {
+    public Map<String, Reactor> readFile(String path) throws IOException {
         if (path.endsWith(".xml")) {
             return this.getReader().readFile(path);
         }

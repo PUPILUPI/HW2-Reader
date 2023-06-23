@@ -4,19 +4,39 @@
  */
 package ru.belov;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import ru.belov.db.entity.Company;
+import ru.belov.db.entity.Country;
+import ru.belov.db.entity.Site;
+import ru.belov.db.sql.DataBase;
+import ru.belov.exceptions.ReactorLibraryException;
 import ru.belov.importers.ImporterBuilder;
 import ru.belov.reactors.ReactorLibrary;
+import ru.belov.readers.ExcelReader;
+import ru.belov.service.ComputingService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class GUI extends javax.swing.JFrame {
     @Autowired
     private ImporterBuilder importerBuilder;
+    @Autowired
+    private ComputingService service;
+    private boolean loadDb = false;
+    private boolean loadLibrary = false;
     private ReactorLibrary library;
     private String fileName = null;
 
@@ -155,30 +175,134 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void consumptionByRegionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consumptionByRegionActionPerformed
-        // TODO add your handling code here:
+        if (!loadDb) {
+            JOptionPane.showMessageDialog(null, "Вы еще не загрузили данные в БД");
+            return;
+        }
+        try {
+            DataBase db = new DataBase();
+            db.calculateConsumption();
+            ResultSet set = db.calculateConsumptionByRegion();
+            List<String[]> out = new ArrayList<>();
+            String[] row;
+            int i = 0;
+            while (set.next()) {
+                i++;
+                row = new String[2];
+                row[0] = set.getString(1);
+                row[1] = String.valueOf(set.getDouble(2));
+                out.add(row);
+            }
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Регион");
+            model.addColumn("Объем ежегодного потребления, т.");
+            for (String[] string : out) {
+                model.addRow(string);
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_consumptionByRegionActionPerformed
 
     private void consumptionByCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consumptionByCountryActionPerformed
-        // TODO add your handling code here:
+        if (!loadDb) {
+            JOptionPane.showMessageDialog(null, "Вы еще не загрузили данные в БД");
+            return;
+        }
+        try {
+            DataBase db = new DataBase();
+            db.calculateConsumption();
+            ResultSet set = db.calculateConsumptionByCountry();
+            List<String[]> out = new ArrayList<>();
+            String[] row;
+            int i = 0;
+            while (set.next()) {
+                i++;
+                row = new String[2];
+                row[0] = set.getString(1);
+                row[1] = String.valueOf(set.getDouble(2));
+                out.add(row);
+            }
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Страна");
+            model.addColumn("Объем ежегодного потребления, т.");
+            for (String[] string : out) {
+                model.addRow(string);
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_consumptionByCountryActionPerformed
 
     private void consumptionByCompanyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consumptionByCompanyActionPerformed
-        // TODO add your handling code here:
+        if (!loadDb) {
+            JOptionPane.showMessageDialog(null, "Вы еще не загрузили данные в БД");
+            return;
+        }
+        try {
+            DataBase db = new DataBase();
+            db.calculateConsumption();
+            ResultSet set = db.calculateConsumptionByCompany();
+            List<String[]> out = new ArrayList<>();
+            String[] row;
+            int i = 0;
+            while (set.next()) {
+                i++;
+                row = new String[2];
+                row[0] = set.getString(1);
+                row[1] = String.valueOf(set.getDouble(2));
+                out.add(row);
+            }
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Компания");
+            model.addColumn("Объем ежегодного потребления, т.");
+            for (String[] string : out) {
+                model.addRow(string);
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_consumptionByCompanyActionPerformed
 
     private void chooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseFileActionPerformed
-        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir") + "\\src\\main\\resources");
+        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir") + "\\resources");
         int ret = fileChooser.showDialog(null, "Choose file");
         if (ret != JFileChooser.APPROVE_OPTION) {
             return;
         }
         fileName = fileChooser.getSelectedFile().getAbsolutePath();
         library = new ReactorLibrary(fileName);
-        library.setMap(importerBuilder.getData(fileName));
+        try {
+            library.setMap(importerBuilder.getData(fileName));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Ошибка при чтении файла");
+        } catch (ReactorLibraryException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        loadLibrary = true;
     }//GEN-LAST:event_chooseFileActionPerformed
 
     private void loadDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDBActionPerformed
-
+        if (!loadLibrary) {
+            JOptionPane.showMessageDialog(null, "Вы еще не выбралии файл");
+            return;
+        }
+        ExcelReader reader = new ExcelReader(System.getProperty("user.dir") + "\\resources\\ReactorData.xlsx");
+        try {
+            service.createRegions(reader.readRegions("regions"));
+            Map<Long, Country> countries = service.createCountries(reader.readCountries("countries"))
+                    .stream().collect(Collectors.toMap(Country::getId, it -> it));
+            Map<Long, Company> companies = service.createCompanies(reader.readCompanies("companies", countries))
+                    .stream().collect(Collectors.toMap(Company::getId, it -> it));
+            Map<Long, Site> sites = service.createSites(reader.readSites("sites", countries, companies)).stream().collect(Collectors.toMap(Site::getId, it -> it));
+            service.createUnits(reader.readUnits("units", library.getMap(), sites));
+        } catch (IOException | InvalidFormatException e) {
+            throw new RuntimeException(e);
+        }
+        loadDb = true;
     }//GEN-LAST:event_loadDBActionPerformed
 
     /**
