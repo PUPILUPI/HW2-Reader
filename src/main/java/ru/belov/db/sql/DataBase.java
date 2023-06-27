@@ -1,12 +1,27 @@
 package ru.belov.db.sql;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
 
 public class DataBase {
-    private final Connection connection;
+    private String url;
+    private String username;
 
-    public DataBase() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:postgresql://dpg-ci8tqtenqql0ldeb37k0-a.frankfurt-postgres.render.com:5432/reactor_library", "user", "MQKUjW9ldYST3sRBV9EyuKLJ6ctDBJor");
+    private String password;
+    private final Connection connection;
+    public DataBase() throws SQLException, IOException {
+        Properties props = new Properties();
+        InputStream input = new FileInputStream(System.getProperty("user.dir") + "\\application.properties");
+        props.load(input);
+        url = props.getProperty("spring.datasource.url");
+        username = props.getProperty("spring.datasource.username");
+        password = props.getProperty("spring.datasource.password");
+        connection = DriverManager.getConnection(url, username, password);
     }
 
     public void calculateConsumption() throws SQLException {
@@ -37,6 +52,7 @@ public class DataBase {
                 """;
         return st.executeQuery(sql);
     }
+
     public ResultSet calculateConsumptionByCountry() throws SQLException {
         Statement st = connection.createStatement();
         String sql = """
@@ -48,6 +64,7 @@ public class DataBase {
                 """;
         return st.executeQuery(sql);
     }
+
     public ResultSet calculateConsumptionByCompany() throws SQLException {
         Statement st = connection.createStatement();
         String sql = """

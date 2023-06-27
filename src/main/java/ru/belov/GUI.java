@@ -8,6 +8,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.PropertySource;
 import ru.belov.db.entity.Company;
 import ru.belov.db.entity.Country;
 import ru.belov.db.entity.Site;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@PropertySource({"application.properties"})
 @SpringBootApplication
 public class GUI extends javax.swing.JFrame {
     @Autowired
@@ -200,7 +202,7 @@ public class GUI extends javax.swing.JFrame {
                 model.addRow(string);
             }
             jTable1.setModel(model);
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }//GEN-LAST:event_consumptionByRegionActionPerformed
@@ -231,7 +233,7 @@ public class GUI extends javax.swing.JFrame {
                 model.addRow(string);
             }
             jTable1.setModel(model);
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }//GEN-LAST:event_consumptionByCountryActionPerformed
@@ -262,7 +264,7 @@ public class GUI extends javax.swing.JFrame {
                 model.addRow(string);
             }
             jTable1.setModel(model);
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }//GEN-LAST:event_consumptionByCompanyActionPerformed
@@ -300,7 +302,7 @@ public class GUI extends javax.swing.JFrame {
             Map<Long, Site> sites = service.createSites(reader.readSites("sites", countries, companies)).stream().collect(Collectors.toMap(Site::getId, it -> it));
             service.createUnits(reader.readUnits("units", library.getMap(), sites));
         } catch (IOException | InvalidFormatException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Ошибка при чтении файла");
         }
         loadDb = true;
     }//GEN-LAST:event_loadDBActionPerformed
